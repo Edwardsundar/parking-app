@@ -1,5 +1,6 @@
 package com.app.parker.presentation
 
+import android.util.Log
 import android.widget.ProgressBar
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
@@ -49,6 +50,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.app.parker.R
+import com.app.parker.presentation.nav.NavigationRoute
+import com.gowtham.ratingbar.RatingBar
+import com.gowtham.ratingbar.RatingBarStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,9 +86,8 @@ fun PaymentScreen(
         modifier = modifier,
         topBar = {
             TopAppBar(title = {
-
                 Text(
-                    text = "${viewModel.selectedPlace?.name} ${viewModel.selectedParkingSlot}",
+                    text = "${viewModel.selectedPlace?.name}",
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1
                 )
@@ -109,7 +112,7 @@ fun PaymentScreen(
             onExpiryDateChanged = {
                               expiryDate = it
             },
-            totalAmount = 1000.0,
+            totalAmount = viewModel.totalAmount.value,
             onCardInputClicked = {
 
             },
@@ -138,7 +141,7 @@ private fun PaymentScreenContent(
     onCardNumberChanged: (String) -> Unit,
     onExpiryDateChanged: (String) -> Unit,
     onCvcChanged: (String) -> Unit,
-    totalAmount: Double,
+    totalAmount: String,
     onCardInputClicked: (Boolean) -> Unit,
     rotated: Boolean,
     onCardClick: () -> Unit,
@@ -191,6 +194,18 @@ private fun PaymentScreenContent(
                         text = "Payment Successfull",
                         textAlign = TextAlign.Center
                     )
+                    var rating: Float by remember { mutableStateOf(3.2f) }
+
+                    RatingBar(
+                        value = rating,
+                        onValueChange = {
+                            rating = it
+                        },
+                        onRatingChanged = {
+                            Log.d("TAG", "onRatingChanged: $it")
+                        }
+                    )
+
                     ShoppingButton(
                         modifier = modifier.padding(top = 8.dp),
                         onClick = onContinueShoppingClick,
@@ -226,8 +241,8 @@ private fun PaymentScreenContent(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 PaymentDetailItem(
-                    title = "delevery charge",
-                    description = 22.0
+                    title = "Service charge",
+                    description = "20"
                 )
                 PaymentDetailItem(
                     title = "Total amount",

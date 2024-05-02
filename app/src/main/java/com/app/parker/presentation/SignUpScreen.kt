@@ -35,13 +35,15 @@ import com.app.parker.ui.theme.LightGreen
 
 @Composable
 fun SignUpScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: MainViewModel
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -75,8 +77,8 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
             label = { Text("Confirm Password") },
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -90,13 +92,15 @@ fun SignUpScreen(
 
         Button(
             onClick = {
-                navController.navigate(NavigationRoute.ParkingAreaListingScreen.route)
+                viewModel.signUp(email , password , confirmPassword)
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = LightGreen)
         ) {
             Text("Sign Up", fontSize = 20.sp)
         }
+        if (viewModel.isLogInSuccess.value)
+            navController.navigate(NavigationRoute.ParkingAreaListingScreen.route)
 
     }
 }

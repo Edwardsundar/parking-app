@@ -10,17 +10,24 @@ import androidx.compose.ui.unit.dp
 import com.app.parker.R
 import com.app.parker.constant.Constants.KEY_IS_LOGGED_IN
 import com.app.parker.constant.Constants.PREF_NAME
+import com.app.parker.constant.Constants.USER_NAME
 
 object CommonUtil {
-    fun isLoggedIn(context : Context): Boolean {
+
+    fun getUserName():String {
+        val sharedPreferences = appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(USER_NAME , "").toString()
+    }
+    fun isLoggedIn(context : Context = appContext): Boolean {
         val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false)
     }
 
-    fun setLoggedInStatus(context: Context, isLoggedIn: Boolean) {
+    fun setLoggedInStatus(context: Context = appContext, isLoggedIn: Boolean , userName : String) {
         val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.putBoolean(KEY_IS_LOGGED_IN, isLoggedIn)
+        editor.putString(USER_NAME, userName)
         editor.apply()
     }
 

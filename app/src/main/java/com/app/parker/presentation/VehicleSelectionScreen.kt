@@ -1,11 +1,9 @@
 package com.app.parker.presentation
 
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,12 +17,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.app.parker.R
 import com.app.parker.constant.CommonUtil
@@ -69,35 +63,69 @@ fun VehicleSelectionScreen(
 
     val dateDialogState = rememberMaterialDialogState()
     val timeDialogState = rememberMaterialDialogState()
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Three Options") }
+                title = { Text(text = "Select Vehicle Type") }
             )
         },
         containerColor = MaterialTheme.colorScheme.background
     ) {padding->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Box(modifier = Modifier.fillMaxSize()){
 
-            OptionBox(imgId = R.drawable.img_bike){
-                viewModel.selectedVehicle = VehicleType.Bike
-                dateDialogState.show()
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            OptionBox(imgId = R.drawable.img_car){
-                viewModel.selectedVehicle = VehicleType.Car
-                dateDialogState.show()
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            OptionBox(imgId = R.drawable.img_bus){
-                viewModel.selectedVehicle = VehicleType.Van
-                dateDialogState.show()
+            // First FAB on the left
+            ExtendedFloatingActionButton(
+                text = { Text(text = "Exit") },
+                icon = { Icon(
+                    painterResource(R.drawable.baseline_arrow_back_24),
+                    contentDescription = null)
+                },
+                onClick = {
+                    navController.navigate(NavigationRoute.ExitORScannerScreen.route)
+                },
+                modifier = Modifier
+                    .padding(start = 32.dp, end = 32.dp, bottom = 32.dp)
+                    .align(Alignment.BottomStart)
+            )
+
+            // Second FAB on the right
+            ExtendedFloatingActionButton(
+                text = { Text(text = "Enter") },
+                icon = {
+                    Icon(
+                        painter = painterResource(R.drawable.baseline_arrow_forward_24),
+                        contentDescription = null ,
+                    ) },
+                onClick = {
+                    navController.navigate(NavigationRoute.EntryQRScannerScreen.route)
+                },
+                modifier = Modifier
+                    .padding(start = 32.dp, end = 32.dp, bottom = 32.dp)
+                    .align(Alignment.BottomEnd)
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                OptionBox(imgId = R.drawable.img_bike){
+                    viewModel.selectedVehicle = VehicleType.Bike
+                    dateDialogState.show()
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                OptionBox(imgId = R.drawable.img_car){
+                    viewModel.selectedVehicle = VehicleType.Car
+                    dateDialogState.show()
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                OptionBox(imgId = R.drawable.img_bus){
+                    viewModel.selectedVehicle = VehicleType.Van
+                    dateDialogState.show()
+                }
             }
         }
     }
@@ -116,6 +144,7 @@ fun VehicleSelectionScreen(
                 text = "Select"
             ){
                 viewModel.selectedDate = formattedDate
+                viewModel.selectedDateLocal = pickedDate
                 timeDialogState.show()
             }
             negativeButton(
@@ -150,7 +179,9 @@ fun VehicleSelectionScreen(
                 text = "Select"
             ){
                 viewModel.selectedTime = formattedTime
+                viewModel.selectedTimeLocal = pickedTime
                 navController.navigate(NavigationRoute.ParkingAreaTopView.route)
+                viewModel.collectBookedDataFromApi()
             }
             negativeButton(
                 text = "Cancel"

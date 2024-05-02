@@ -16,12 +16,16 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,6 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
+import com.app.parker.R
 import com.app.parker.presentation.nav.NavigationRoute
 
 data class ParkingArea(val name: String, val imageUrl: String, val address: String)
@@ -42,12 +47,11 @@ fun ParkingAreaList(
     navController: NavController,
     viewModel: MainViewModel
 ) {
-    val areaLists = viewModel.listingAreas.collectAsState()
+    val areaLists by viewModel.listingAreas.collectAsState()
     Column(modifier = Modifier
         .fillMaxSize()
     ) {
-        val searchQuery = remember { mutableStateOf("") }
-        SearchBar(searchQuery)
+        SearchBar(viewModel)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -60,9 +64,9 @@ fun ParkingAreaList(
             verticalItemSpacing = 8.dp,
             state = rememberLazyStaggeredGridState()
         ){
-            items(areaLists.value.size){index ->
-                ParkingAreaItem(areaLists.value[index]) {
-                    viewModel.selectedPlace = areaLists.value[index]
+            items(areaLists.size){index ->
+                ParkingAreaItem(areaLists[index]) {
+                    viewModel.selectedPlace = areaLists[index]
                     navController.navigate(NavigationRoute.VehicleSelectionScreen.route )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
@@ -111,13 +115,13 @@ fun ParkingAreaItem(
 
 @Composable
 fun SearchBar(
-    searchQuery: MutableState<String>,
-    viewModel: MainViewModel = hiltViewModel<MainViewModel>()
+    viewModel: MainViewModel
 ) {
+    var searchQuery by remember { mutableStateOf("") }
     OutlinedTextField(
-        value = searchQuery.value,
+        value = searchQuery,
         onValueChange = {
-            searchQuery.value = it
+            searchQuery = it
             viewModel.searchAreas(it)
                         },
         label = { Text("Search") },

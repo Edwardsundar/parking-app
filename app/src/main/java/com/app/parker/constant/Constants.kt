@@ -6,6 +6,7 @@ object Constants {
     const val PLACE_ID = "Place_ID"
     const val PREF_NAME = "MyAppPrefs"
     const val KEY_IS_LOGGED_IN = "isLoggedIn"
+    const val USER_NAME = "user name"
     val parkingAreas = listOf(
         ParkingArea("Parking Area 1", "https://www.unitygroup.in/img/detail-banner01.jpg", "123 Main St, City"),
         ParkingArea("Parking Area 2", "https://hubballidharwadinfra.com/wp-content/uploads/2023/09/inox-multiplex-dharwad.jpg", "456 Elm St, City"),
@@ -18,4 +19,6 @@ object Constants {
         ParkingArea("Parking Area 9", "https://via.placeholder.com/150", "123 Main St, City"),
         ParkingArea("Parking Area 10", "https://via.placeholder.com/150", "456 Elm St, City")
     )
+
+    const val BASE_URL = "http://192.168.220.220:8080/"
 }

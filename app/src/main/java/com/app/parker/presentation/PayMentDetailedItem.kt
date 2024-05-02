@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RowScope.PaymentDetailItem(title: String, description: Double) {
+fun RowScope.PaymentDetailItem(title: String, description: String) {
     Card(
         modifier = Modifier
             .weight(1f)
@@ -27,7 +27,7 @@ fun RowScope.PaymentDetailItem(title: String, description: Double) {
                 .padding(8.dp),
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "₹${String.format("%.2f", description)}", fontWeight = FontWeight.Bold)
+            Text(text = "₹$description", fontWeight = FontWeight.Bold)
             Text(text = title, fontWeight = FontWeight.Light)
         }
     }

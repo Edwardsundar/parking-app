@@ -9,7 +9,7 @@ sealed class NavigationRoute (val route : String){
     object PaymentScreen:NavigationRoute("payment")
     object SuccessFullBookingScreen:NavigationRoute("success_screen")
     object FailureBookingScreen:NavigationRoute("failure_screen")
-    object EntryORScannerScreen:NavigationRoute("incomming_qr_scanner_screen")
+    object EntryQRScannerScreen:NavigationRoute("incomming_qr_scanner_screen")
     object ExitORScannerScreen:NavigationRoute("outgoing_qr_scanner_screen")
     object SettingsScreen:NavigationRoute("settings_screen")
 }
