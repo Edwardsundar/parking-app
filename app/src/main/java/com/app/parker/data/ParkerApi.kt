@@ -60,5 +60,8 @@ interface ParkerApi {
         @Query("time") time : String,
     ) : ParkingPlace
 
+    @GET("exit")
+    suspend fun openExitGate()
+
 
 }

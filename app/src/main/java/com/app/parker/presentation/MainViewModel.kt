@@ -82,8 +82,16 @@ class MainViewModel @Inject constructor(
 
     private var availablePlaceJob : Job? = null
     fun collectBookedDataFromApi() {
-        if (availablePlaceJob != null) return
-        val localDateTime = LocalDateTime.of(selectedDateLocal, selectedTimeLocal)
+        if (availablePlaceJob != null) {
+            availablePlaceJob?.cancel()
+        }
+        val localDateTime = LocalDateTime.of(
+            selectedDateLocal!!.year,
+            selectedDateLocal!!.month,
+            selectedDateLocal!!.dayOfMonth,
+            selectedTimeLocal!!.hour,
+            selectedTimeLocal!!.minute
+        )
         val millies = localDateTime.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli().toString()
         availablePlaceJob = viewModelScope.launch(Dispatchers.IO) {
             while (true){
@@ -101,6 +109,7 @@ class MainViewModel @Inject constructor(
                     "a1 = " + availablePlace.value?.v0.toString() +
                     "  a2 = " + availablePlace.value?.v1.toString()
                 )
+                Log.e("12345678" , millies)
             }
         }
     }
@@ -119,6 +128,12 @@ class MainViewModel @Inject constructor(
                 totalTimeConsume.value = repo.userTimeConsume(userName , selectedPlace!!.name)
                 totalAmount.value  = repo.userCanExit(userName , selectedPlace!!.name)
             }
+        }
+    }
+
+    fun paymentIsSuccess(){
+        viewModelScope.launch {
+            repo.openExitGate()
         }
     }
 
@@ -167,7 +182,13 @@ class MainViewModel @Inject constructor(
 
     fun bookNewSlot(){
 
-        val localDateTime = LocalDateTime.of(selectedDateLocal, selectedTimeLocal)
+        val localDateTime = LocalDateTime.of(
+            selectedDateLocal!!.year,
+            selectedDateLocal!!.month,
+            selectedDateLocal!!.dayOfMonth,
+            selectedTimeLocal!!.hour,
+            selectedTimeLocal!!.minute
+        )
         val millies = localDateTime.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli().toString()
         viewModelScope.launch {
             _bookingResult.value = repo.bookNewSlot(selectedPlace!!.name , millies , selectedParkingSlot!! , userName )

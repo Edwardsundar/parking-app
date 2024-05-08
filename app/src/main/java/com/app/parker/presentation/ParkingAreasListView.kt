@@ -80,13 +80,14 @@ fun ParkingAreaItem(
     parkingArea: ParkingArea,
     onItemClick : () -> Unit
 ) {
-    Card(
+    androidx.compose.material.Card(
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(Color.LightGray)
             .clickable {
                 onItemClick()
             }
+            .background(MaterialTheme.colors.background),
+        elevation = 8.dp
     ) {
         Column(
             modifier = Modifier

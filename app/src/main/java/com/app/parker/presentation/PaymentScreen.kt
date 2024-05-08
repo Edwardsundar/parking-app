@@ -11,6 +11,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +31,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -83,7 +86,7 @@ fun PaymentScreen(
     }
 
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.background(Color.White),
         topBar = {
             TopAppBar(title = {
                 Text(
@@ -92,7 +95,8 @@ fun PaymentScreen(
                     maxLines = 1
                 )
             })
-        }
+        },
+        containerColor = Color.White
     ) { paddingValues ->
         PaymentScreenContent(
             modifier = Modifier.padding(paddingValues),
@@ -121,7 +125,8 @@ fun PaymentScreen(
 
             },
             onPaymentClicked = {
-                               paymentIsSuccess = !paymentIsSuccess
+                paymentIsSuccess = !paymentIsSuccess
+                viewModel.paymentIsSuccess()
             },
             isPaymentDone = paymentIsSuccess,
             isLoading = false,
@@ -154,6 +159,7 @@ private fun PaymentScreenContent(
         modifier = modifier
             .fillMaxSize()
             .padding(8.dp)
+            .background(Color.White)
     ) {
         if (isLoading) {
             Column(
@@ -252,7 +258,7 @@ private fun PaymentScreenContent(
             Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
                 ShoppingButton(
                     onClick = onPaymentClicked,
-                    buttonText = "Payment"
+                    buttonText = "Pay Now"
                 )
             }
         }
@@ -306,7 +312,7 @@ private fun CardHolderName(
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         label = {
-            Text(text = "Card Holder")
+            Text(text = "Card Holder" )
         },
         interactionSource = interactionSource(
             cardRotate = false,

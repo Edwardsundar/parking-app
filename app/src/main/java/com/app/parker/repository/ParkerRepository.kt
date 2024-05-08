@@ -101,6 +101,16 @@ class ParkerRepository @Inject constructor(
         }
         return ParkingPlace(0,0 , 0, 0)
     }
+
+    suspend fun openExitGate() {
+        try {
+            api.openExitGate()
+        }catch (e : Exception){
+            withContext(Dispatchers.Main.immediate){
+                Toast.makeText(CommonUtil.appContext, "Server Network Error", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 }
 
 

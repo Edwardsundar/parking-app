@@ -85,6 +85,7 @@ fun LoginScreen(
                 CoroutineScope(Dispatchers.Main).launch {
                     viewModel.logIn(email , password)
                     if (viewModel.isLogInSuccess.value){
+                        viewModel.isLogInSuccess.value = false
                         navController.navigate(NavigationRoute.ParkingAreaListingScreen.route)
                     }
                 }

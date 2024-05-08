@@ -99,8 +99,10 @@ fun SignUpScreen(
         ) {
             Text("Sign Up", fontSize = 20.sp)
         }
-        if (viewModel.isLogInSuccess.value)
+        if (viewModel.isLogInSuccess.value) {
+            viewModel.isLogInSuccess.value = false
             navController.navigate(NavigationRoute.ParkingAreaListingScreen.route)
+        }
 
     }
 }

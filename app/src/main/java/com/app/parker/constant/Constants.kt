@@ -20,5 +20,6 @@ object Constants {
         ParkingArea("Parking Area 10", "https://via.placeholder.com/150", "456 Elm St, City")
     )
 
-    const val BASE_URL = "http://192.168.220.220:8080/"
+//    const val BASE_URL = "http://192.168.141.220:8080/"
+    const val BASE_URL = "http://192.168.141.147:8080/"
 }
