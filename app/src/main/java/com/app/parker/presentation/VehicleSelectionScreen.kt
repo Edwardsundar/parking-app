@@ -6,7 +6,9 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -72,7 +74,34 @@ fun VehicleSelectionScreen(
         },
         containerColor = MaterialTheme.colorScheme.background
     ) {padding->
-        Box(modifier = Modifier.fillMaxSize()){
+        Box(modifier = Modifier.fillMaxSize(1f)){
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                OptionBox(imgId = R.drawable.img_bike){
+                    viewModel.selectedVehicle = VehicleType.Bike
+                    dateDialogState.show()
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                OptionBox(imgId = R.drawable.img_car){
+                    viewModel.selectedVehicle = VehicleType.Car
+                    dateDialogState.show()
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                OptionBox(imgId = R.drawable.img_bus){
+                    viewModel.selectedVehicle = VehicleType.Van
+                    dateDialogState.show()
+                }
+                
+                Spacer(modifier = Modifier.height(200.dp))
+            }
 
             // First FAB on the left
             ExtendedFloatingActionButton(
@@ -104,29 +133,6 @@ fun VehicleSelectionScreen(
                     .padding(start = 32.dp, end = 32.dp, bottom = 32.dp)
                     .align(Alignment.BottomEnd)
             )
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                OptionBox(imgId = R.drawable.img_bike){
-                    viewModel.selectedVehicle = VehicleType.Bike
-                    dateDialogState.show()
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                OptionBox(imgId = R.drawable.img_car){
-                    viewModel.selectedVehicle = VehicleType.Car
-                    dateDialogState.show()
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                OptionBox(imgId = R.drawable.img_bus){
-                    viewModel.selectedVehicle = VehicleType.Van
-                    dateDialogState.show()
-                }
-            }
         }
     }
 

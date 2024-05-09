@@ -30,11 +30,11 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material.TopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -68,7 +68,7 @@ import com.app.parker.presentation.nav.NavigationRoute
 import com.app.parker.ui.theme.LightGreen
 import com.gowtham.ratingbar.RatingBar
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun ParkingAreaTopView(
     navController: NavController,
@@ -248,7 +248,7 @@ fun CardElevation(
             ) {
 
                 Image(
-                    painter = painterResource(id = R.drawable.auto_car),
+                    painter = painterResource(id = R.drawable.img_car),
                     contentScale = ContentScale.Crop,
                     contentDescription = null
                 )
@@ -257,84 +257,3 @@ fun CardElevation(
     }
 }
 
-@Composable
-fun SingleParkingSpace(
-    slotNumber : Int,
-    isBooked : Boolean,
-    vehicleType : VehicleType,
-    onItemClick : (id : String)-> Unit
-){
-    Card(
-        elevation = 8.dp,
-        modifier = Modifier
-            .padding(6.dp)
-            .border(
-                width = 1.dp,
-                shape = RoundedCornerShape(5.dp),
-                color = Color.Black
-            )
-            .clickable {
-                onItemClick("A$slotNumber")
-            },
-        contentColor = if (isBooked) LightGreen else Color.Transparent
-    ) {
-        Row (
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround
-        ){
-            Text(
-                text = "A$slotNumber",
-                fontSize = 50.sp,
-                color = Color.Black
-            )
-            Image(
-                painter = painterResource(id =CommonUtil.vehicleTypeToDrawable(vehicleType = vehicleType)),
-                contentDescription = null,
-                modifier = Modifier.size(70.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun CanvasLine(
-    rowCount :Int,
-    columnCount: Int
-) {
-    Canvas(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        val startX = 200f
-        val endX = center.x + center.x - 200f
-        val topY = 200f
-        val bottomY = center.y+center.y-200f
-        val centerLineLengthY = topY + bottomY
-        val centerLineLengthX = startX + endX
-        drawLine(
-            start = Offset(center.x , topY),
-            end = Offset(center.x ,bottomY ),
-            color = Color.Black,
-            strokeWidth = 5f
-        )
-
-        val spacePerCellY = centerLineLengthY / rowCount
-        var tempTopY = topY
-        (1..rowCount).forEach { row->
-            drawLine(
-                start = Offset(startX , tempTopY),
-                end = Offset(endX ,tempTopY ),
-                color = Color.Black,
-                strokeWidth = 5f
-            )
-            tempTopY += spacePerCellY
-        }
-
-    }
-}
-
-@Preview
-@Composable
-fun CanvasLinePreview(){
-    CanvasLine(rowCount = 5, columnCount = 2)
-}
